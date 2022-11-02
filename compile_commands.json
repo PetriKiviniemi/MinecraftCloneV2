@@ -1,0 +1,12 @@
+[
+{
+  "directory": "E:/Repos/MinecraftCloneV2/build",
+  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/MinecraftCloneV2.dir/includes_C.rsp   -o CMakeFiles\\MinecraftCloneV2.dir\\src\\glad.c.obj   -c E:\\Repos\\MinecraftCloneV2\\src\\glad.c",
+  "file": "E:/Repos/MinecraftCloneV2/src/glad.c"
+},
+{
+  "directory": "E:/Repos/MinecraftCloneV2/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   @CMakeFiles/MinecraftCloneV2.dir/includes_CXX.rsp   -o CMakeFiles\\MinecraftCloneV2.dir\\src\\main.cpp.obj -c E:\\Repos\\MinecraftCloneV2\\src\\main.cpp",
+  "file": "E:/Repos/MinecraftCloneV2/src/main.cpp"
+}
+]
