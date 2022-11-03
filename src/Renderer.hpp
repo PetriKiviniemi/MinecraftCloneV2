@@ -4,7 +4,7 @@
 #include <memory>
 #include "ShaderProgram.hpp"
 #include <glm/glm.hpp>
-#include "Chunk.hpp"
+#include "blocks/Cube.hpp"
 
 class Renderer
 {
@@ -32,29 +32,13 @@ class Renderer
         void updateScreenDimensions(unsigned int w, unsigned int h);
         void prepare_frame();
 
-        std::unordered_map<glm::vec3, std::unique_ptr<Chunk>> chunks_to_render;
-        std::unordered_map<unsigned int, unsigned int> vbo_buffers;
+        //TODO:: Replace with view object that contains everything in view of the player!
+        //void loadMesh(std::vector<float> data, unsigned int textureBuf);
 
-        void add_chunk(Chunk* c, glm::vec3 hash) {
-            chunks_to_render.insert(std::make_pair(hash, std::unique_ptr<Chunk>(c)));
-        }
+        void temp_render_cube(Cube* cube);
+        void temp_add_data(std::vector<float> data, unsigned int textureBuf);
 
-
-        inline Chunk* get_chunk(glm::vec3 hash) {
-            return chunks_to_render.contains(hash) ?
-                chunks_to_render[hash].get() :
-                nullptr;
-        }
-        void addData(std::vector<float> data, unsigned int textureBuf);
         void clear_and_load_shaders(unsigned int wWidth, unsigned int wHeight);
-
-        void drawCube(std::shared_ptr<Cube> c, unsigned int wWidth, unsigned int wHeight);
-        void drawChunk(std::shared_ptr<Chunk> c, unsigned int wWidth, unsigned int wHeight);
-        void draw_chunks(
-                const std::unordered_map<float, std::shared_ptr<Chunk>>& chunkMap,
-                unsigned int wWidth,
-                unsigned int wHeight
-        );
 };
 
 

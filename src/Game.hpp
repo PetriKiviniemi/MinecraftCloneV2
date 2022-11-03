@@ -1,5 +1,5 @@
 #include <vector>
-#include "Cube.hpp"
+#include "blocks/Cube.hpp"
 #include "Chunk.hpp"
 #include "World.hpp"
 #include "Renderer.hpp"

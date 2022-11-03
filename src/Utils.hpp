@@ -11,6 +11,16 @@
 
 namespace Utils
 {
+    class Tickable {
+        public:
+            virtual void tick() = 0;
+    };
+
+    class Updatable {
+        public:
+            virtual void update() = 0;
+    };
+
     static float cantorPairingFunc(int a, int b)
     {
         return 0.5*(a + b)*(a + b + 1) + b;
@@ -26,36 +36,6 @@ namespace Utils
         //Generate hash using the specific order of the cells
         //Cantor pairing function
         return 0.5*(cantorPairingFunc(x,y) + z)*(cantorPairingFunc(x,y) + z + 1) + z;  
-    }
-
-    static bool isPlayerInChunk(glm::vec3 playerPos, glm::vec3 chunkPos)
-    {
-        int px = static_cast<int>(playerPos[0]);
-        int py = static_cast<int>(playerPos[1]);
-        int pz = static_cast<int>(playerPos[2]);
-
-        int cx = static_cast<int>(chunkPos[0]);
-        int cy = static_cast<int>(chunkPos[1]);
-        int cz = static_cast<int>(chunkPos[2]);
-
-        //Only px and pz relevenant to check
-        if(px > cx && pz > cz)
-        {
-            if(
-                px <= cx + CHUNK_MAX_ROWS && px >= cx &&
-                pz <= cz + CHUNK_MAX_COLS && pz >= cz
-            )
-            {
-                //Player in chunk
-            std::cout << "Player in chunk: " << generateHashForVec3AsInts(chunkPos) << std::endl;
-            return true;
-            }
-        }
-        return false;
-    }
-
-    static bool getPlayerCurrentChunkPos(glm::vec3 playerPos)
-    {
     }
 
     static std::string vec3toString(glm::vec3 pos)

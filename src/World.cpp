@@ -48,22 +48,12 @@ std::thread World::generateNewChunkAsync(glm::vec3 chunkPos)
 
 void World::loadChunks()
 {
-    /* TODO::
-     * New logic
-     * Instead of modifying the large chunk array at runtime (everyframe)
-     * Have a pointer of chunks in Renderer
-     * Lock this memory space with a mutex
-     * Check every frame whether player crossed boundaries to new chunk 
-     * If that's the case, lock the mutex here, and load the new chunks from preloaded world
-     * */
 
     Camera* cam = Camera::getInstance();
     glm::vec3 camPos = cam->getPosition();
 
-
     std::vector<float> hashList = {};
     //Check 5x5 area of chunks around the player
-
 
     for(int i = -2; i < 2; i++)
     {

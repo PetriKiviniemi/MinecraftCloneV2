@@ -41,7 +41,6 @@ void Game::update()
 void Game::draw_frame()
 {
     renderer->clear_and_load_shaders(WINDOW_WIDTH, WINDOW_HEIGHT);
-    renderer->draw_chunks(world->getLoadedChunks(), WINDOW_WIDTH, WINDOW_HEIGHT);
 }
 
 

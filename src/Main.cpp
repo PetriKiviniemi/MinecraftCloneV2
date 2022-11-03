@@ -54,14 +54,13 @@ int main()
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glEnable(GL_DEPTH_TEST);
 
-    Game* game = Game::getInstance(window);
+    Renderer* renderer = Renderer::getInstance();
     
     //Main loop
     while(!glfwWindowShouldClose(window))
     {
-        game->prepare_frame();
-        game->update();
-        game->draw_frame();
+        renderer->clear_and_load_shaders(1024, 1024);
+        renderer->temp_render_cube(new Cube());
 
         glfwSwapBuffers(window);
         glfwPollEvents();

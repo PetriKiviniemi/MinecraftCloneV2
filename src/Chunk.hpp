@@ -9,7 +9,7 @@
 #include <vector>
 #include <memory>
 #include <thread>
-#include "Cube.hpp"
+#include "blocks/Cube.hpp"
 #include <array>
 
 constexpr unsigned int CHUNK_MAX_LAYERS = 8;
@@ -85,41 +85,6 @@ class Chunk
                 }
             }
         }
-
-        /* NOTE:: C++ COMPILER PROBABLY CANNOT INLINE THIS */
-        /* FOR STATIC FUNCTIONS ONLY */
-        
-        /* Pass any function that takes following parameters:
-         * std::shared_ptr<Cube> cube
-         * Int layerIdx
-         * Int rowIdx
-         * Int colIdx
-         * */
-        template <typename Func>
-        void funcCallbackIterateCubes(Func f)
-        {
-            int layerC = 0;
-            std::array<std::array<std::array<std::shared_ptr<Cube>,CHUNK_MAX_COLS>,CHUNK_MAX_ROWS>,CHUNK_MAX_LAYERS>::iterator layers;
-            for(layers = cubes.begin(); layers != cubes.end(); layers++)
-            {
-                int rowC = 0;
-                std::array<std::array<std::shared_ptr<Cube>,CHUNK_MAX_COLS>,CHUNK_MAX_ROWS>::iterator rows;
-                for(rows = layers->begin(); rows != layers->end(); rows++)
-                {
-                    int colC = 0;
-                    std::array<std::shared_ptr<Cube>,CHUNK_MAX_COLS>::iterator cols;
-                    for(cols = rows->begin(); cols != rows->end(); cols++)
-                    {
-
-                        f(this, (*cols),layerC, rowC, colC, cubes.size(), cubes.at(0).size(), cubes.at(0).at(0).size());
-                        colC++;
-                    }
-                    rowC++;
-                }
-                layerC++;
-            }
-        }
-
 };
 
 #endif

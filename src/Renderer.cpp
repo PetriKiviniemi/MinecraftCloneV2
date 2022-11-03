@@ -8,8 +8,7 @@
 #include <GLFW/glfw3.h>
 #include "Renderer.hpp"
 #include "ShaderProgram.hpp"
-#include "Cube.hpp"
-#include "Chunk.hpp"
+#include "blocks/Cube.hpp"
 #include "Camera.hpp"
 
 Renderer* Renderer::_instance{nullptr};
@@ -37,13 +36,7 @@ void Renderer::init()
     glGenVertexArrays(1, &vao); 
 }
 
-void Renderer::updateScreenDimensions(unsigned int w, unsigned int h)
-{
-    //Pass
-    return;
-}
-
-void Renderer::addData(std::vector<float> data, unsigned int textureBuf)
+void Renderer::temp_add_data(std::vector<float> data, unsigned int textureBuf)
 {
     glBindVertexArray(vao);
 
@@ -68,60 +61,20 @@ void Renderer::addData(std::vector<float> data, unsigned int textureBuf)
 
 }
 
-void Renderer::drawCube(std::shared_ptr<Cube> c, unsigned int wWidth, unsigned int wHeight)
+void Renderer::temp_render_cube(Cube* cube)
 {
-    //Don't draw cubes that are inside chunks and invisible to player
-    if(c->getData().size() <= 0)
-        return;
-
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, c->getPosition()); 
+    model = glm::translate(model, cube->getPosition()); 
 
     sp->setMat4("model", model);
 
 
-    addData(c->getData(), c->getTextureBuffer());
+    temp_add_data(cube->getData(), cube->getTextureBuffer());
 
     glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES, 0, c->getActiveFacesCount() * 6);
+    glDrawArrays(GL_TRIANGLES, 0, cube->getActiveFacesCount() * 6);
 }
 
-void Renderer::drawChunk(
-        std::shared_ptr<Chunk> chunk,
-        unsigned int wWidth,
-        unsigned int wHeight
-)
-{
-
-    std::array<std::array<std::array<std::shared_ptr<Cube>,CHUNK_MAX_COLS>,CHUNK_MAX_ROWS>,CHUNK_MAX_LAYERS>::iterator layers;
-    for(layers = chunk->getCubes().begin(); layers != chunk->getCubes().end(); layers++)
-    {
-        std::array<std::array<std::shared_ptr<Cube>,CHUNK_MAX_COLS>,CHUNK_MAX_ROWS>::iterator rows;
-        for(rows = layers->begin(); rows != layers->end(); rows++)
-        {
-            std::array<std::shared_ptr<Cube>,CHUNK_MAX_COLS>::iterator cols;
-            for(cols = rows->begin(); cols != rows->end(); cols++)
-            {
-                drawCube((*cols), wWidth, wHeight);
-            }
-        }
-    }
-}
-
-void Renderer::draw_chunks(
-        const std::unordered_map<float, std::shared_ptr<Chunk>>& chunkMap,
-        unsigned int wWidth,
-        unsigned int wHeight
-)
-{
-    auto it = chunkMap.begin();
-
-    while(it != chunkMap.end())
-    {
-        drawChunk((*it).second, wWidth, wHeight);
-        it++;
-    }
-}
 
 void Renderer::clear_and_load_shaders(unsigned int wWidth, unsigned int wHeight)
 {

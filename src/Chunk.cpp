@@ -1,5 +1,4 @@
 #include "Chunk.hpp"
-#include "Cube.hpp"
 #include <vector>
 #include <memory>
 #include <array>
@@ -50,8 +49,6 @@ void Chunk::initializeChunk(glm::vec3 chunkPos)
             }
         }
     }
-    
-    funcCallbackIterateCubes(Chunk::removeDuplicateFaces_static);
 }
 
 std::thread Chunk::createLayerAsync(int layerPos, glm::vec3 chunkPos)

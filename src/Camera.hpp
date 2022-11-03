@@ -4,7 +4,7 @@
 #define GLFW_INCLUDE_NONE
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Cube.hpp"
+#include "blocks/Cube.hpp"
 #include <vector>
 #include <mutex>
 

@@ -1,7 +1,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <string>
 #include <vector>
-#include "TextureManager.hpp"
+#include "../TextureManager.hpp"
 #include "Cube.hpp"
 #include <iostream>
 #include <vector>
