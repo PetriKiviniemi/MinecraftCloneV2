@@ -4,7 +4,7 @@
 #define GLFW_INCLUDE_NONE
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "blocks/Cube.hpp"
+#include "blocks/block.hpp"
 #include <vector>
 #include <mutex>
 
@@ -42,7 +42,7 @@ class Camera
         void moveRight(float speed);
 
         void rotate(float mXoffset, float mYoffset);
-        bool checkForCollision(Cube* c);
+        bool checkForCollision(Block* c);
 };
 
 #endif

@@ -9,11 +9,11 @@
 #include "Renderer.hpp"
 #include "Game.hpp"
 #include "Utils.hpp"
+#include "chunk_renderer.hpp"
 
 boolean hasWindowReceivedFocusOnce = false;
 float oldX = 512 / 2;
 float oldY = 512 / 2;
-
 
 void framebuffer_size_callback(GLFWwindow*, int width, int height);
 void mouseCallback(GLFWwindow*, double, double);
@@ -29,6 +29,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 
     GLFWwindow* window = glfwCreateWindow(1024, 1024, "Main window", NULL, NULL);
 
@@ -54,13 +55,20 @@ int main()
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glEnable(GL_DEPTH_TEST);
 
+    Game* game = Game::getInstance(window);
+    std::cout << "Hello" << std::endl;
     Renderer* renderer = Renderer::getInstance();
+    std::cout << "Hello" << std::endl;
+    ChunkRenderer* chunk_renderer = new ChunkRenderer(new Chunk(glm::vec3(0,0,0)));
+    renderer->add_chunk_renderer(chunk_renderer);
     
     //Main loop
     while(!glfwWindowShouldClose(window))
     {
+        renderer->tick();
+        game->update(); //TODO:: REMOVE
         renderer->clear_and_load_shaders(1024, 1024);
-        renderer->temp_render_cube(new Cube());
+        renderer->render_chunks();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

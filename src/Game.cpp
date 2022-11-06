@@ -8,7 +8,7 @@ Game* Game::_instance{nullptr};
 
 void Game::init(GLFWwindow* new_window)
 {
-    world = new World();
+    //world = new World();
     camera = Camera::getInstance();
     renderer = Renderer::getInstance();
     window = new_window;
@@ -24,25 +24,11 @@ Game* Game::getInstance(GLFWwindow* window)
     return _instance;
 }
 
-void Game::prepare_frame()
-{
-    //Check for changes in nearby chunks with checking size of the chunk
-    //If size has changed, re-add the chunk data to world
-    world->prepare_frame();
-    renderer->prepare_frame();
-}
-
 void Game::update()
 {
     //Call update if necessary
     processInput();
 }
-
-void Game::draw_frame()
-{
-    renderer->clear_and_load_shaders(WINDOW_WIDTH, WINDOW_HEIGHT);
-}
-
 
 void Game::processInput()
 {

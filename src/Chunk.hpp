@@ -9,82 +9,31 @@
 #include <vector>
 #include <memory>
 #include <thread>
-#include "blocks/Cube.hpp"
+#include "blocks/block.hpp"
 #include <array>
 
-constexpr unsigned int CHUNK_MAX_LAYERS = 8;
-constexpr unsigned int CHUNK_MAX_ROWS = 6;
-constexpr unsigned int CHUNK_MAX_COLS = 6;
+static constexpr glm::vec3 CHUNK_SIZE = glm::vec3(6, 6, 6);
+static constexpr int x_size = CHUNK_SIZE.x;
+static constexpr int y_size = CHUNK_SIZE.y;
+static constexpr int z_size = CHUNK_SIZE.z;
 
 class Chunk
 {
     private:
-        std::array<std::array<std::array<std::shared_ptr<Cube>, CHUNK_MAX_COLS>,CHUNK_MAX_ROWS>,CHUNK_MAX_LAYERS> cubes{nullptr};
         glm::vec3 chunkPosition;
-        unsigned int currentLayerCount = CHUNK_MAX_LAYERS; //Variable used for testing the chunk's size
         void(Chunk::*m_callbackFuncPtr)();
     public:
-        Chunk(glm::vec3 chunkPos);
+        std::array<std::array<std::array<Block*, x_size>, y_size>,z_size> blocks;
+        Chunk(glm::vec3 chunk_pos) { init(chunk_pos); };
         ~Chunk() {};
 
-        //TODO::
-        //1. Implement chunk position in world (offset from origin)
-
-        void initializeChunk(glm::vec3 chunkPos);
-        void createLayer(int layerPos, glm::vec3 chunkPos);
-        std::thread createLayerAsync(int layerPos, glm::vec3 chunkPos);
-
-        std::array<std::array<std::array<std::shared_ptr<Cube>, CHUNK_MAX_COLS>,CHUNK_MAX_ROWS>,CHUNK_MAX_LAYERS> getCubes() { return cubes; }
-
-        const glm::vec3 getChunkPos() const { return chunkPosition; }
-        void setChunkPos(glm::vec3 pos) { chunkPosition = pos; }
-
-        void replaceCubeAtIndex(std::shared_ptr<Cube> c, unsigned int idx) { /* TODO:: IMPLEMENT */ }
-        Cube* getCubeAtIndex(unsigned int lIdx, unsigned int rIdx, unsigned int cIdx) {return cubes[lIdx][rIdx][cIdx].get();}
-
-        void generateTextures(
-            std::shared_ptr<Cube> c
-        );
-
-        void removeDuplicateFaces(
-           std::shared_ptr<Cube> c,
-            unsigned int lIdx,
-            unsigned int rIdx,
-            unsigned int cIdx,
-            unsigned int layerCount,
-            unsigned int rowCount,
-            unsigned int colCount 
-        );
-
-        static void removeDuplicateFaces_static(
-            void* arg,
-            std::shared_ptr<Cube> c,
-            unsigned int lIdx,
-            unsigned int rIdx,
-            unsigned int cIdx,
-            unsigned int layerCount,
-            unsigned int rowCount,
-            unsigned int colCount 
-        )
-        {
-            Chunk* that = (Chunk*)arg;
-            std::thread t1(&Chunk::removeDuplicateFaces, that, c,lIdx,rIdx,cIdx,layerCount,rowCount,colCount);
-            t1.detach();
+        glm::vec3 offset_from_origin;
+        void init(glm::vec3 chunk_pos) { 
+            offset_from_origin = chunk_pos;
+            generate_chunk();
         }
 
-        void print_chunk_info()
-        {
-            for(int i = 0; i < cubes.size(); i++)
-            {
-                for(int j = 0; j < cubes.at(0).size(); j++)
-                {
-                    for(int k = 0; k < cubes.at(0).at(0).size(); k++)
-                    {
-                        cubes.at(i).at(j).at(k).get()->print_cube_state();
-                    }
-                }
-            }
-        }
+        void generate_chunk();
 };
 
 #endif

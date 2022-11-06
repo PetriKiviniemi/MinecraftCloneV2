@@ -21,16 +21,12 @@ void World::load()
         for(int j = 0; j < 1; j++)
         {
             glm::vec3 newChunkPos = glm::vec3(0.0f, 0.0f, 0.0f);
-            newChunkPos[0] += static_cast<int>(j * static_cast<int>(CHUNK_MAX_ROWS));
-            newChunkPos[2] += static_cast<int>(i * static_cast<int>(CHUNK_MAX_COLS));
 
             addLoadedChunk(Utils::generateHashForVec3AsInts(newChunkPos), std::shared_ptr<Chunk>(new Chunk(newChunkPos)));
             //chunk_threads.push_back(generateNewChunkAsync(newChunkPos));
             std::cout << "Loading: " << (i*10)+j << "%" << std::endl;
         }
     }
-
-    loadedChunks[0].get()->print_chunk_info();
 
     std::vector<std::thread>::iterator threads_it;
     for(threads_it = chunk_threads.begin(); threads_it != chunk_threads.end(); threads_it++)
@@ -60,10 +56,6 @@ void World::loadChunks()
         for(int j = -2; j < 2; j++)
         {
             glm::vec3 pos = glm::vec3(0,0,0);
-            int nearestX = Utils::roundToNearestMultipleOf(int(camPos[0]), CHUNK_MAX_ROWS);
-            int nearestY = Utils::roundToNearestMultipleOf(int(camPos[2]), CHUNK_MAX_COLS);
-            pos[0] = nearestX + (j  * static_cast<int>(CHUNK_MAX_ROWS));
-            pos[2] = nearestY + (i  * static_cast<int>(CHUNK_MAX_COLS));
             //Hash the positions next to player
             //Add these hashes to a list
             float hashCode = Utils::generateHashForVec3AsInts(pos);

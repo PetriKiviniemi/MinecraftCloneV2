@@ -122,7 +122,7 @@ void Camera::reverse(float speed)
     camLookAt();
 }
 
-bool Camera::checkForCollision(Cube* c)
+bool Camera::checkForCollision(Block* c)
 {
     return true;
 }
