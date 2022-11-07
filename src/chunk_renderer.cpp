@@ -18,7 +18,6 @@ void ChunkRenderer::bind_face_data_to_buffers(Face* f)
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    std::cout << "Binding face data" << std::endl;
     //Bind texture buffer
     glBindTexture(GL_TEXTURE_2D, txAtlas->get_texture_buffer(f->texture_buff));
 
@@ -51,7 +50,6 @@ void ChunkRenderer::render_block(Block* block)
     for(std::map<BlockFaceDir, Face>::iterator it = faces.begin(); it != faces.end(); it++)
     {
         Face* face = &it->second;
-        std::cout << "iterating_faces" << std::endl;
         render_face(face, block->position);
     }
 }
@@ -60,14 +58,58 @@ void ChunkRenderer::render_chunk(TextureAtlas* tx_atlas, ShaderProgram* shader_p
 {
     txAtlas = tx_atlas;
     sp = shader_prog;
+    for(const auto& block : blocks_to_render)
+        render_block(block);
+}
+
+void ChunkRenderer::create_mesh()
+{
     for(const auto& i : chunk->blocks)
     {
         for(const auto& j : i)
         {
-            for(const auto& block : j)
+            for(const auto& block: j)
             {
-                std::cout << "rendering_chunk" << std::endl;
-                render_block(block);
+                //TODO:: Instead of checking boundary blocks,
+                //check if all neighbouring cubes are not air -> do not render the block 
+                //check neighbouring chunk cubes as well
+                /*
+                if(
+                    (block->position.x + 1 < chunk->blocks.size() &&
+                     chunk->blocks[block->position.x + 1][block->position.y][block->position.z]->get_block_type() != BlockType::AIR) &&
+                    (block->position.x - 1 > 0 &&
+                     chunk->blocks[block->position.x - 1][block->position.y][block->position.z]->get_block_type() != BlockType::AIR) &&
+
+                    (block->position.z + 1 < chunk->blocks[0][0].size() &&
+                     chunk->blocks[block->position.x][block->position.y][block->position.z + 1]->get_block_type() != BlockType::AIR) &&
+                    (block->position.z - 1 > 0 &&
+                     chunk->blocks[block->position.x][block->position.y][block->position.z - 1]->get_block_type() != BlockType::AIR) &&
+
+                    (block->position.x + 1 < chunk->blocks.size() && block->position.z + 1 < chunk->blocks[0][0].size() &&
+                     chunk->blocks[block->position.x + 1][block->position.y][block->position.z + 1]->get_block_type() != BlockType::AIR) &&
+                    (block->position.x - 1 > 0 && block->position.z + 1 < chunk->blocks[0][0].size() &&
+                     chunk->blocks[block->position.x - 1 ][block->position.y][block->position.z + 1]->get_block_type() != BlockType::AIR) &&
+
+                    (block->position.x + 1 < chunk->blocks.size() && block->position.z - 1 > 0 &&
+                     chunk->blocks[block->position.x + 1][block->position.y][block->position.z - 1]->get_block_type() != BlockType::AIR) &&
+                    (block->position.x - 1 > 0 && block->position.z - 1 > 0 &&
+                     chunk->blocks[block->position.x - 1][block->position.y][block->position.z - 1]->get_block_type() != BlockType::AIR)
+                )
+                {
+                    blocks_to_render.push_back(block);
+                }
+                */
+                if(
+                    block->position.x == chunk->offset_from_origin.x ||
+                    block->position.y == chunk->offset_from_origin.y ||
+                    block->position.z == chunk->offset_from_origin.z ||
+                    block->position.x == chunk->offset_from_origin.x + CHUNK_SIZE.x - 1||
+                    block->position.y == chunk->offset_from_origin.y + CHUNK_SIZE.y - 1||
+                    block->position.z == chunk->offset_from_origin.z + CHUNK_SIZE.z - 1
+                )
+                {
+                    blocks_to_render.push_back(block);
+                }
             }
         }
     }

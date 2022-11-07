@@ -60,7 +60,13 @@ int main()
     Renderer* renderer = Renderer::getInstance();
     std::cout << "Hello" << std::endl;
     ChunkRenderer* chunk_renderer = new ChunkRenderer(new Chunk(glm::vec3(0,0,0)));
+    ChunkRenderer* chunk_renderer_two = new ChunkRenderer(new Chunk(glm::vec3(16, 0, 0)));
+    ChunkRenderer* chunk_renderer_three = new ChunkRenderer(new Chunk(glm::vec3(0, 0, 16)));
+    ChunkRenderer* chunk_renderer_four = new ChunkRenderer(new Chunk(glm::vec3(16, 0, 16)));
     renderer->add_chunk_renderer(chunk_renderer);
+    renderer->add_chunk_renderer(chunk_renderer_two);
+    renderer->add_chunk_renderer(chunk_renderer_three);
+    renderer->add_chunk_renderer(chunk_renderer_four);
     
     //Main loop
     while(!glfwWindowShouldClose(window))

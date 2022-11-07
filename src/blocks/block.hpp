@@ -85,10 +85,16 @@ struct Face
     unsigned int get_texture_id() { return texture_buff; }
 };
 
+enum BlockType {
+    GRASS,
+    AIR
+};
+
 struct Block 
 {
     glm::vec3 position;
     virtual std::map<BlockFaceDir, Face> get_faces() = 0;
+    virtual BlockType get_block_type() = 0;
 
     explicit Block(glm::vec3 pos) { position = pos;};
     ~Block() {};
@@ -97,6 +103,7 @@ struct Block
 struct GrassBlock : public Block
 {
     using Block::Block;
+    BlockType b_type = BlockType::AIR;
 
     std::map<BlockFaceDir, Face> faces = std::map<BlockFaceDir, Face>{
         {BlockFaceDir::N, Face(BlockFaceDir::N, 3)},
@@ -108,6 +115,7 @@ struct GrassBlock : public Block
     };
 
     std::map<BlockFaceDir, Face> get_faces() override { return faces; }
+    BlockType get_block_type() override { return b_type; }
 };
 
 

@@ -9,6 +9,7 @@
 #include "blocks/block.hpp"
 #include "ShaderProgram.hpp"
 
+
 class ChunkRenderer : Utils::Tickable
 {
     public:
@@ -23,10 +24,13 @@ class ChunkRenderer : Utils::Tickable
             chunk = c;
             glGenBuffers(1, &vbo);
             glGenVertexArrays(1, &vao); 
+            create_mesh();
         };
         ~ChunkRenderer() {};
+        std::vector<Block*> blocks_to_render;
         
         void tick();
+        void create_mesh();
         void bind_face_data_to_buffers(Face* f);
         void render_face(Face* f, glm::vec3 position);
         void render_block(Block* block);
