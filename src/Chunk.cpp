@@ -14,6 +14,7 @@ void Chunk::generate_chunk()
         {
             for(int k = 0; k < z_size; k++)
             {
+                //TODO:: generate_with_noise();
                 blocks[i][j][k] = new GrassBlock(
                     glm::vec3(
                         offset_from_origin.x + i,
