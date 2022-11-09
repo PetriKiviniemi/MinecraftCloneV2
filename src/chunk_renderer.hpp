@@ -31,7 +31,8 @@ class ChunkRenderer : Utils::Tickable
         
         void tick();
         void create_mesh();
-        void bind_face_data_to_buffers(Face* f);
+        //void bind_face_data_to_buffers(Face* f);
+        void bind_data_to_buffer(std::vector<float> data, unsigned int texture_buff);
         void render_face(Face* f, glm::vec3 position);
         void render_block(Block* block);
         void render_chunk(TextureAtlas* txAtlas, ShaderProgram* sp);

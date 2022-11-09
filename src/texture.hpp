@@ -18,6 +18,7 @@ struct TextureAtlas {
 
     std::vector<std::vector<unsigned char>> textures;
     std::vector<unsigned int> texture_buffers;
+    unsigned int one_texture_buffer;
 
     void load_texture_atlas()
     {
@@ -48,7 +49,25 @@ struct TextureAtlas {
         return texture_buffers[texture_id];
     }
 
+    unsigned int get_one_texture_buffer()
+    {
+        return one_texture_buffer;
+    }
+
     void generate_textures() {
+
+        glGenTextures(1, &one_texture_buffer);
+        glBindTexture(GL_TEXTURE_2D, one_texture_buffer);
+
+        //Configure texture
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_atlas);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
         for(int i = 0; i < textures.size(); i++)
         {
             unsigned char* texture_data = &textures[i][0];
