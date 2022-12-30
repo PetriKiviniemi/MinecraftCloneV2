@@ -5,6 +5,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include "noise.hpp"
 
 void Chunk::generate_chunk()
 {
@@ -14,6 +15,15 @@ void Chunk::generate_chunk()
         {
             for(int k = 0; k < z_size; k++)
             {
+                glm::vec2 shift = glm::vec2(0,0);
+                float zoom = 0.1f;
+                glm::vec3 xyz_plane(i * zoom + shift.x, j, k * zoom + shift.y);
+                float y_mod = Noise::perlin(xyz_plane);
+                //TODO:: BLOCKS SHOULD REMAIN IN THEIR FIXED POSITION
+                //BUT GENERATE RANDOM INDICES OF 3D MATRIX
+                //OF WHICH CUBES WILL FORM THE "OUTER SHELL" OR TOP OF THE CHUNK
+                //WHICH WILL BE THEN FLOODED TO BOTTOM OF THE CHUNK
+
                 //TODO:: generate_with_noise();
                 blocks[i][j][k] = new GrassBlock(
                     glm::vec3(

@@ -53,6 +53,13 @@ namespace Utils
         return original + (multipleOf - (original % multipleOf));
     }
 
+    static bool is_chunk_boundary(glm::vec3 boundary_pos)
+    {
+        if(boundary_pos.x == 0 || boundary_pos.y == 0 || boundary_pos.z == 0)
+            return true;
+        return false;
+    }
+
 }
 
 #endif

@@ -19,6 +19,7 @@ struct Vec3Comparator {
         return fobj.x < sobj.x && fobj.y < sobj.y && fobj.z < sobj.z;
     }
 };
+
 static constexpr glm::vec3 CHUNK_SIZE = glm::vec3(16, 16, 16);
 static constexpr int x_size = CHUNK_SIZE.x;
 static constexpr int y_size = CHUNK_SIZE.y;

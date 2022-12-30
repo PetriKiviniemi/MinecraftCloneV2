@@ -79,7 +79,7 @@ struct Face
 };
 
 enum BlockType {
-    GRASS,
+    GRASS = 0,
     AIR
 };
 
@@ -87,9 +87,10 @@ struct Block
 {
     glm::vec3 position;
     std::vector<float> data;
+    BlockType b_type;
     virtual std::map<BlockFaceDir, Face*> get_faces() = 0;
-    virtual BlockType get_block_type() = 0;
     virtual std::vector<float> get_data() = 0;
+    BlockType get_block_type() { return b_type; };
 
     std::map<BlockFaceDir, Face*> faces = std::map<BlockFaceDir, Face*>();
 
@@ -109,7 +110,7 @@ struct Block
 struct GrassBlock : public Block
 {
     using Block::Block;
-    BlockType b_type = BlockType::AIR;
+    BlockType b_type = BlockType::GRASS;
 
     void set_grass_data() {
         faces = std::map<BlockFaceDir, Face*>();
@@ -122,10 +123,20 @@ struct GrassBlock : public Block
     }
 
     std::map<BlockFaceDir, Face*> get_faces() override { return faces; }
-    BlockType get_block_type() override { return b_type; }
     std::vector<float> get_data() override { return data; }
 
     explicit GrassBlock(glm::vec3 pos) : Block(pos) {position = pos; set_grass_data(); generate_mesh(); };
+};
+
+struct AirBlock : public Block
+{
+    using Block::Block;
+    BlockType b_type = BlockType::AIR;
+
+    std::map<BlockFaceDir, Face*> get_faces() override { return faces; }
+    std::vector<float> get_data() override { return data; }
+
+    explicit AirBlock(glm::vec3 pos) : Block(pos) {position = pos;}
 };
 
 
